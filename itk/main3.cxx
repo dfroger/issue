@@ -101,11 +101,9 @@ int main()
       thresholder->Update();
 
       duplicator->SetInputImage(thresholder->GetOutput());
-      duplicator->Modified();
       duplicator->Update();
 
       composer->SetInput(componentIndex, duplicator->GetOutput());
-      composer->Modified();
       composer->Update();
   }
 
