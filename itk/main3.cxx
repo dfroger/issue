@@ -96,11 +96,8 @@ int main()
                     componentIndex++)
   {
       indexer->SetIndex(componentIndex);
-      indexer->Modified();
-      indexer->Update();
 
       thresholder->SetInput(indexer->GetOutput());
-      thresholder->Modified();
       thresholder->Update();
 
       duplicator->SetInputImage(thresholder->GetOutput());
