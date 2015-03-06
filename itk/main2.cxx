@@ -2,6 +2,7 @@
 #include "itkImageRegionIterator.h"
 #include "itkNthElementImageAdaptor.h"
 #include "itkThresholdImageFilter.h"
+#include "itkBinomialBlurImageFilter.h"
 
 using namespace std;
 
@@ -82,10 +83,17 @@ int main()
   typename ThresholderType::Pointer thresholder = ThresholderType::New();
   PixelType th = 10;
   
-  thresholder->SetInput(adaptor);
-  thresholder->ThresholdAbove(th);
-  thresholder->SetOutsideValue(th);
-  thresholder->Update();
+  // This segfault
+  //thresholder->SetInput(adaptor);
+  //thresholder->ThresholdAbove(th);
+  //thresholder->SetOutsideValue(th);
+  //thresholder->Update();
+
+  // This works
+  typedef itk::BinomialBlurImageFilter<AdaptorType, ScalarImageType >  BlurFilterType;
+  BlurFilterType::Pointer blurFilter = BlurFilterType::New();
+  blurFilter->SetInput(adaptor);
+  blurFilter->Update();
 
   return EXIT_SUCCESS;
 }

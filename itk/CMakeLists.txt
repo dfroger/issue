@@ -5,6 +5,6 @@ project(main)
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
 
-add_executable(main MACOSX_BUNDLE main1.cxx)
+add_executable(main main2.cxx)
 
 target_link_libraries(main ${ITK_LIBRARIES})
