@@ -104,8 +104,8 @@ int main()
       duplicator->Update();
 
       composer->SetInput(componentIndex, duplicator->GetOutput());
-      composer->Update();
   }
+  composer->Update();
 
   cout << "Output:" << endl;
   PrintImage<VectorImageType>(composer->GetOutput());
