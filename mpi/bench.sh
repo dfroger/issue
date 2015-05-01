@@ -4,7 +4,7 @@ RESULT_FILE=time.txt
 
 rm -f $RESULT_FILE
 
-for nproc in {1..10}
+for nproc in 2 4 8 16
 do
     echo -n "$nproc " >> $RESULT_FILE
 
