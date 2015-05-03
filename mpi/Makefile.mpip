@@ -1,0 +1,17 @@
+# sudo apt-get install libgdb-dev for lib iberty
+EXE = bench_mpi
+SRC = bench_mpi.cxx
+CXX = mpicxx
+
+CONDADIR = /local/froger/miniconda/envs/mpip
+LIBDIR = $(CONDADIR)/lib
+MPIP_LDFLAGS = -L$(LIBDIR) -lmpiP -lm -lbfd -liberty -lunwind -ldwarf -lelf
+
+$(EXE): $(SRC)
+	$(CXX) -o $@ -g $< $(MPIP_LDFLAGS)
+
+bench: $(EXE)
+	bash bench.sh
+
+clean:
+	rm -f $(EXE) *.mpiP
