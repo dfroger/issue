@@ -1,15 +1,7 @@
 Simple benchmark of the MPI_Allreduce function.
 
-I get a problem with 7 or more processes:
+I get a problem with 7 or more processes with version `MPICH 3.1.4`, see results
+in `carla/` and `otis/`. (carla and otis are my machine names).
 
-    nproc time 
-    1     10.34
-    2     5.22
-    3     3.52
-    4     2.66
-    5     2.16
-    6     1.84
-    7     14.21
-    8     22.53
-    9     27.76
-    10     31.40
+With my real code, on `otis`, I have the same problem with `Open MPI 1.8.4`,
+`MPIC 1.4.1` and `MPICH 3.1.4`.
