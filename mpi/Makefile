@@ -3,7 +3,7 @@ SRC = bench_mpi.cxx
 CXX = mpicxx
 
 $(EXE): $(SRC)
-	$(CXX) -o $@ $<
+	$(CXX) -o $@ -O3 $<
 
 bench: $(EXE)
 	bash bench.sh
