@@ -1,4 +1,8 @@
-Simple benchmark of the `MPI_Allreduce` function.
+# `bench_mpi.cxx`
+
+Simple example to reproduce a slowing down of the `MPI_Allreduce` function.
+
+# Description
 
 Execute a loop `niter` times. For each loop, sleep during `microseconds`
 (to simulation computation), and call `MPI_Allreduce`.
@@ -21,6 +25,8 @@ We expected the program be run with wall clock:
 |  4         |  52.5        |
 |  8         |  26.25       |
 | 16         |  13.125      |
+
+# Issue
 
 I get a problem with 7 or more processes with version `MPICH 3.1.4`, see results
 in `carla/` and `otis/`. (carla and otis are my machine names).
