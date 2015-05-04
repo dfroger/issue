@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
     unsigned int niter = 1000;
     double seconds_cumul = 0.;
     double seconds_to_compute_one_iteration = 0.2 / size;
-    double overhead_percent_max = 100.;
+    double overhead_percent_max = 5.;
 
     cout << "iter / niter seconds_cumul" << endl;
     for (unsigned int iter = 0 ; iter < niter ; iter++)
