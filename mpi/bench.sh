@@ -2,6 +2,12 @@
 
 RESULT_FILE=time.txt
 
+if [ "$#" != "1" ]
+then
+    echo "Usage: bench.sh EXE"
+    exit 1
+fi
+
 rm -f $RESULT_FILE
 
 for nproc in 2 4 8 16
@@ -12,5 +18,5 @@ do
         --format=%e \
         --output=$RESULT_FILE \
         --append \
-        mpirun -n $nproc ./bench_mpi
+        mpirun -n $nproc $1
 done

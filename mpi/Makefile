@@ -1,8 +1,7 @@
-EXE = bench_mpi
-SRC = bench_mpi.cxx
+EXE = bench_mpi bench_barrier
 CXX = mpicxx
 
-$(EXE): $(SRC)
+%: %.cxx
 	$(CXX) -o $@ -O3 $<
 
 bench: $(EXE)
