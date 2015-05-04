@@ -1,11 +1,10 @@
 EXE = bench_mpi bench_barrier
 CXX = mpicxx
 
+all: $(EXE)
+
 %: %.cxx
 	$(CXX) -o $@ -O3 $<
-
-bench: $(EXE)
-	bash bench.sh
 
 clean:
 	rm -f $(EXE)
