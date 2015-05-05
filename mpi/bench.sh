@@ -18,5 +18,5 @@ do
         --format=%e \
         --output=$RESULT_FILE \
         --append \
-        mpirun -n $nproc $1
+        mpiexec -n $nproc -bind-to hwthread $1
 done
