@@ -21,6 +21,8 @@ using namespace std;
 double get_overhead_percent(int rank, int size, int iter,
                             double overhead_percent_max)
 {
+    if (size==1)
+        return overhead_percent_max;
     int turning_rank = (rank + iter) % size;
     return double(turning_rank) / (size-1) * overhead_percent_max;
 }
@@ -39,7 +41,6 @@ int main(int argc, char* argv[]) {
     double seconds_to_compute_one_iteration = 0.2 / size;
     double overhead_percent_max = 5.;
 
-    cout << "iter / niter seconds_cumul" << endl;
     for (unsigned int iter = 0 ; iter < niter ; iter++)
     {
         // Get overhead beetween 0. and overhead_percent_max.
@@ -60,7 +61,7 @@ int main(int argc, char* argv[]) {
         seconds_cumul += seconds_max;
 
         if (rank==0)
-            cout << iter << " / " << niter << " " << seconds_cumul << endl;
+            cout << size << ": " << iter << " / " << niter << " " << seconds_cumul << endl;
     }
 
     // Finalize MPI.

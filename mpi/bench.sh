@@ -10,7 +10,7 @@ fi
 
 rm -f $RESULT_FILE
 
-for nproc in 2 4 8 16
+for nproc in 1 2 4 8
 do
     echo -n "$nproc " >> $RESULT_FILE
 
