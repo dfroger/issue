@@ -1,54 +1,68 @@
-#include <iostream>
 #include <unistd.h>
 #include <math.h>
+#include <stdlib.h>
+#include <iostream>
 
 #include <mpi.h>
 
 using namespace std;
 
-/* For example, with size 4 and overhead_percent_max 5:
- *    
- *            rank=0  rank=1  rank=2  rank=3
- *    iter=0  0.      1.66    3.33    5.
- *    iter=1  1.66    3.33    5.      0.
- *    iter=2  3.33    5.      0.      1.66
- *    iter=3  5.      0.      1.66    3.33
- *    iter=4  0.      1.66    3.33    5.
- *    iter=5  1.66    3.33    5.      0.
- *    iter=6  3.33    5.      0.      1.66
- *    etc
- *
- */
-double get_overhead_percent(int rank, int size, int iter,
-                            double overhead_percent_max)
+double *
+linspace(double start, double stop, unsigned int number)
 {
-    if (size==1)
-        return overhead_percent_max;
-    int turning_rank = (rank + iter) % size;
-    return double(turning_rank) / (size-1) * overhead_percent_max;
+    double* x = new double[number];
+    double step = (stop - start) / (number-1);
+    for (unsigned int i = 0 ; i < number ; i ++)
+        x[i] = start + i*step;
+    return x;
+}
+
+unsigned int
+get_turning_rank(int mpi_rank, int mpi_size, int iter)
+{
+    return (mpi_rank + iter) % mpi_size;
+}
+
+unsigned int
+one_iteration_time(double ratio, unsigned int power, double variation_proc,
+                   double variation_proc_max, int mpi_size)
+{
+    return ratio * pow(2,power) * variation_proc / (mpi_size*variation_proc_max);
 }
 
 int main(int argc, char* argv[]) {
-    MPI_Init(&argc, &argv);
-    int rank, size;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    unsigned int niter = 1000;
-    unsigned int usecs_to_compute_one_iteration = pow(2,16) / size;
+    // Parse command line.
+    if (argc != 5) {
+        cerr << "Usage: " << argv[0] << " POWER RATIO VARIATION_PROC_MAX NITER" << endl;
+        return 1;
+    }
+    unsigned int power = atoi(argv[1]);
+    double ratio = atof(argv[2]);
+    double variation_proc_max = atof(argv[3]);
+    unsigned int niter = atoi(argv[4]);
+
+    // Initialize MPI
+    MPI_Init(&argc, &argv);
+    int mpi_rank, mpi_size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+
+    double *variations_proc = linspace(1., variation_proc_max, mpi_size);
+    if (mpi_size==1)
+        variations_proc[0] = variation_proc_max;
     unsigned int usecs_cumul = 0;
-    double overhead_percent_max = 5.;
 
     for (unsigned int iter = 0 ; iter < niter ; iter++)
     {
-        // Get overhead beetween 0. and overhead_percent_max.
-        double overhead = get_overhead_percent(rank,size,iter,
-                                               overhead_percent_max) / 100.;
-        
-        unsigned int usecs = (unsigned int) usecs_to_compute_one_iteration * (1 + overhead);
+        unsigned int turning_rank = get_turning_rank(mpi_rank, mpi_size, iter);
+        double variation_proc =  variations_proc[turning_rank];
+
+        unsigned int usecs = one_iteration_time(ratio, power, variation_proc,
+                                                variation_proc_max, mpi_size);
 
         // Simulate some computations
-        usleep( usecs);
+        usleep(usecs);
 
         // Perform MPI communications.
         unsigned int usecs_max;
@@ -56,9 +70,14 @@ int main(int argc, char* argv[]) {
 
         usecs_cumul += usecs_max;
 
-        if (rank==0)
-            cout << size << ": " << iter << " / " << niter << " " << usecs_cumul << endl;
+        if (mpi_rank==0 && iter%10==0)
+            cout << mpi_size << ": " << iter << " / " << niter << " " << usecs_cumul << endl;
     }
+
+    if (mpi_rank==0)
+        cout << (double) usecs_cumul / 1.E+06 << endl;
+
+    delete[] variations_proc;
 
     MPI_Finalize();
     return 0;
