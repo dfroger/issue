@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <math.h>
 
 #include <mpi.h>
 
@@ -28,17 +29,14 @@ double get_overhead_percent(int rank, int size, int iter,
 }
 
 int main(int argc, char* argv[]) {
-
-    // Initialize MPI
     MPI_Init(&argc, &argv);
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    unsigned int micro = 1E+06;
     unsigned int niter = 1000;
-    double seconds_cumul = 0.;
-    double seconds_to_compute_one_iteration = 0.2 / size;
+    unsigned int usecs_to_compute_one_iteration = pow(2,16) / size;
+    unsigned int usecs_cumul = 0;
     double overhead_percent_max = 5.;
 
     for (unsigned int iter = 0 ; iter < niter ; iter++)
@@ -47,25 +45,21 @@ int main(int argc, char* argv[]) {
         double overhead = get_overhead_percent(rank,size,iter,
                                                overhead_percent_max) / 100.;
         
-        double seconds = seconds_to_compute_one_iteration * (1 + overhead);
-        unsigned int microseconds = (unsigned int) (seconds * micro);
-        seconds = (double) microseconds / micro;
+        unsigned int usecs = (unsigned int) usecs_to_compute_one_iteration * (1 + overhead);
 
         // Simulate some computations
-        usleep(microseconds);
+        usleep( usecs);
 
         // Perform MPI communications.
-        double seconds_max;
-        MPI_Allreduce(&seconds, &seconds_max, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+        unsigned int usecs_max;
+        MPI_Allreduce(&usecs, &usecs_max, 1, MPI_UNSIGNED, MPI_MAX, MPI_COMM_WORLD);
 
-        seconds_cumul += seconds_max;
+        usecs_cumul += usecs_max;
 
         if (rank==0)
-            cout << size << ": " << iter << " / " << niter << " " << seconds_cumul << endl;
+            cout << size << ": " << iter << " / " << niter << " " << usecs_cumul << endl;
     }
 
-    // Finalize MPI.
     MPI_Finalize();
-
     return 0;
 }
