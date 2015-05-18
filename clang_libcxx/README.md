@@ -33,12 +33,21 @@ For example:
     clang: error: linker command failed with exit code 1 (use -v to see invocation)
     make: *** [main] Error 1
 
+
+Symbols in `greet.o` are:
+
     $ nm greet.o | grep greet
     0000000000000000 T __Z5greetSs
     0000000000000150 S __Z5greetSs.eh
 
+
+While symbols in `main.o` are:
+
     $ nm main.o | grep greet
                      U __Z5greetNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE
+
+
+Unmangling the sybmols give:
 
     $ c++filt __Z5greetSs __Z5greetSs.eh __Z5greetNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE
     greet(std::string)
