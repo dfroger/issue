@@ -1,5 +1,5 @@
-The libc++.dylib **clang** C++ standard libarry is incompatible with the
-**libstdc++.dylib** GNU C++ standard library.
+The **libc++.dylib clang** C++ standard libarry is incompatible with the
+**libstdc++.dylib GNU** C++ standard library.
 
 A program must be compiled and linked with only **-stdlib=libc++** (the
 default) or with only **-stdlib=stdlibc++**.
@@ -47,7 +47,7 @@ While symbols in `main.o` are:
                      U __Z5greetNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE
 
 
-Unmangling the sybmols give:
+Unmangling the symbols give:
 
     $ c++filt __Z5greetSs __Z5greetSs.eh __Z5greetNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE
     greet(std::string)
