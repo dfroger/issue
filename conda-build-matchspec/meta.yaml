@@ -14,7 +14,7 @@ requirements:
 
   run:
     - python 2.7*
-    - sympy 0.7.6 py27_0
+    - sympy 
 
 test:
   imports:
