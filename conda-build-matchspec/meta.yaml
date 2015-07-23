@@ -1,0 +1,21 @@
+package:
+  name: toto
+  version: 0.1.0
+
+source:
+  path: .
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - python 2.7*
+
+  run:
+    - python 2.7*
+    - sympy 0.7.6 py27_0
+
+test:
+  imports:
+    - toto
