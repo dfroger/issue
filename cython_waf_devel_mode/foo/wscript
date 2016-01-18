@@ -1,0 +1,7 @@
+def build(bld):
+    bld(
+        features = 'c cshlib pyext',
+        source   = 'foo.pyx',
+        target   = 'foo'
+    )
+
