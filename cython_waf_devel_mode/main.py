@@ -27,7 +27,7 @@ def build_module(name, pyxfilename, pyxbuild_dir=None, inplace=False, language_l
 
     print('getting module from waf build: %s' % so_name)
 
-    return "/home/froger/repo/dfroger/issue/cython_waf_devel_mode/build/foo/bar.cpython-35m-x86_64-linux-gnu.so"
+    return so_name
 
 pyximport.build_module = build_module
 
