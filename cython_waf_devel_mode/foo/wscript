@@ -1,13 +1,6 @@
 def build(bld):
     bld(
         features = 'c cshlib pyext',
-        source   = 'foo.pyx',
-        target   = 'foo'
-    )
-
-    bld(
-        features = 'subst', 
-        source = '__init__.py', 
-        target = '__init__.py', 
-        is_copy = True,
+        source   = 'bar.pyx',
+        target   = 'bar'
     )
