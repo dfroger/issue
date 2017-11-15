@@ -1,4 +1,4 @@
-const foo = require('./bar').foo
+const foo = require('./foo').foo
 
 describe('async', () => {
     it('waits until a condition', done => {
