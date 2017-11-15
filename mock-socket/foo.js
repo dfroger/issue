@@ -1,17 +1,13 @@
-function until(func) {
-    return new Promise((resolve, reject) => {
+function foo(done) {
+    const p = new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve(func());
+            //const xxx = 2;
+            resolve(xxx);
         }, 100);
     });
-}
-
-function foo() {
-    console.log('entering foo');
-    const func = () => xxx;
-    const p = until(func);
-    p.then(() => {
-        console.log('ok')
+    p.then(data => {
+        console.log(data);
+        done()
     })
 }
 
