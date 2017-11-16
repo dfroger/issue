@@ -1,0 +1,27 @@
+{
+  "name": "jest-promise-error",
+  "version": "1.0.0",
+  "description": "Reproduce how Jest lost error message with promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfroger/issue.git"
+  },
+  "keywords": [
+    "jest",
+    "js",
+    "promise"
+  ],
+  "author": "David Froger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfroger/issue/issues"
+  },
+  "homepage": "https://github.com/dfroger/issue#readme",
+  "dependencies": {
+    "jest": "^21.2.1"
+  }
+}
