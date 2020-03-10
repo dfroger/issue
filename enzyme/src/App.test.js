@@ -18,10 +18,15 @@ it('renders without crashing', done => {
     const n = 5;
     let i = 0;
 
+    function find(app, comp) {
+        //return app.find(comp).length;
+        return app.findWhere(node => node.is(comp)).length;
+    }
+
     function findFooBar() {
         try {
-            const foo = app.find(Foo).length;
-            const bar = app.find(Bar).length;
+            const foo = find(app, Foo);
+            const bar = find(app, Bar);
             console.log(`Foo: ${foo}, Bar: ${bar}`);
             i += 1;
             if (i == n) {

@@ -22,6 +22,9 @@
   },
   "homepage": "https://github.com/dfroger/issue#readme",
   "dependencies": {
-    "jest": "^21.2.1"
+    "jest": "^21.3.0-beta.8"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0"
   }
 }
