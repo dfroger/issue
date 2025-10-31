@@ -1,0 +1,26 @@
+name: issue
+
+services:
+  redis-1:
+    image: redis:8.2.2-bookworm
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf --cluster-announce-ip redis-1
+
+  redis-2:
+    image: redis:8.2.2-bookworm
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf --cluster-announce-ip redis-2
+
+  redis-3:
+    image: redis:8.2.2-bookworm
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf --cluster-announce-ip redis-3
+
+  client:
+    build: .
+    volumes:
+      - ./app:/app
+    init: true
